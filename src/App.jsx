@@ -1,7 +1,7 @@
 import Post from "./page/Post";
 import Navbar from "./components/Navbar";
 import { Routes, Route } from "react-router-dom";
-import Album from "./page/album";
+import Album from "./page/Album";
 import DetailAlbum from "./page/DetailAlbum";
 import DetailPost from "./page/DetailPost";
 import User from "./page/User";
