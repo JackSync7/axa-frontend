@@ -6,10 +6,8 @@ import { Link } from "react-router-dom";
 function Post() {
   const [posts, setPosts] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const [editPost, seteditPost] = useState({
-    title: "",
-    body: "",
-  });
+  const [editMode, setEditMode] = useState(false);
+  const [idPost, setIdPost] = useState(111);
   const [form, setForm] = useState({
     userId: 1,
     Id: 111,
@@ -39,17 +37,12 @@ function Post() {
     });
   };
 
-  const handleEdit = (data, id) => {
-    let body = {
-      ...data,
-      body: editText,
-    };
-    let tempComment = [...comments];
-    tempComment.splice(id, 1, body);
-    setComments(tempComment);
+  const handleEdit = () => {
+    let tempComment = [...posts];
+    tempComment.splice(idPost, 1, form);
+    setPosts(tempComment);
   };
 
-  console.log(posts);
   const deletePost = (id) => {
     let tempPosts = [...posts];
     tempPosts.splice(id, 1);
@@ -69,7 +62,9 @@ function Post() {
       <input type="checkbox" id="my-modal-4" className="modal-toggle" />
       <label htmlFor="my-modal-4" className="modal cursor-pointer">
         <label className="modal-box bg-white text-zinc-900 relative" htmlFor="">
-          <h3 className="text-lg font-bold">Add Post</h3>
+          <h3 className="text-lg font-bold">
+            {!editMode ? "Add Post" : "Edit Post"}
+          </h3>
           <div className="flex flex-col justify-center gap-5">
             <input
               className="bg-zinc-200 px-2 py-1 w-full"
@@ -90,7 +85,11 @@ function Post() {
               placeholder="Body Post"
               required
             />
-            <input onClick={addPost} className="btn" type="submit" />
+            {!editMode ? (
+              <input onClick={addPost} className="btn" type="submit" />
+            ) : (
+              <input onClick={handleEdit} className="btn" type="submit" />
+            )}
           </div>
         </label>
       </label>
@@ -100,6 +99,7 @@ function Post() {
         <div className="flex justify-between">
           <label>Post</label>
           <label
+            onClick={() => setEditMode(false)}
             htmlFor="my-modal-4"
             className="border-2 rounded-md p-1 cursor-pointer mr-36"
           >
@@ -107,18 +107,29 @@ function Post() {
           </label>
         </div>
       </div>
-      <div className="p-20 text-zinc-800 flex flex-row-reverse flex-wrap gap-5 justify-center">
+      <div className="p-20 text-zinc-800 flex flex-row-reverse flex-wrap-reverse gap-5 justify-center">
         {posts?.map((data, i) => (
           <div key={i}>
-            <div
-              onClick={() => deletePost(i)}
-              className="text-red-600 cursor-pointer"
-            >
-              Delete
+            <div className="flex">
+              <div
+                onClick={() => deletePost(i)}
+                className="text-red-600 cursor-pointer"
+              >
+                Delete
+              </div>
+              {data.edit && (
+                <label
+                  onClick={() => {
+                    setEditMode(true);
+                    setIdPost(i);
+                  }}
+                  htmlFor="my-modal-4"
+                  className="ml-4 text-blue-600 cursor-pointer"
+                >
+                  Edit
+                </label>
+              )}
             </div>
-            {data.role && (
-              <div className="text-red-600 cursor-pointer">Edit</div>
-            )}
             <Link to={`/detail-Post/${data.id}`}>
               <div className="w-56  bg-white p-5">
                 <div className="h-16 p-2 text-lg font-semibold overflow-hidden">
