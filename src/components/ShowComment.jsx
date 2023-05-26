@@ -36,7 +36,7 @@ function ShowComment({ id }) {
       ...data,
       body: editText,
     };
-    console.log(id);
+
     let tempComment = [...comments];
     tempComment.splice(id, 1, body);
     setComments(tempComment);
@@ -45,7 +45,7 @@ function ShowComment({ id }) {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  console.log(comments);
+
   return (
     <div className=" flex flex-col items-center justify-center mt-10">
       <div className="w-2/3 bg-white">

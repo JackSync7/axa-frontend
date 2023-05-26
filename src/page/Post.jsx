@@ -6,11 +6,16 @@ import { Link } from "react-router-dom";
 function Post() {
   const [posts, setPosts] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [editPost, seteditPost] = useState({
+    title: "",
+    body: "",
+  });
   const [form, setForm] = useState({
     userId: 1,
     Id: 111,
     title: "",
     body: "",
+    edit: true,
   });
 
   const getPosts = async () => {
@@ -30,8 +35,20 @@ function Post() {
       Id: 111,
       title: "",
       body: "",
+      edit: true,
     });
   };
+
+  const handleEdit = (data, id) => {
+    let body = {
+      ...data,
+      body: editText,
+    };
+    let tempComment = [...comments];
+    tempComment.splice(id, 1, body);
+    setComments(tempComment);
+  };
+
   console.log(posts);
   const deletePost = (id) => {
     let tempPosts = [...posts];
@@ -99,6 +116,9 @@ function Post() {
             >
               Delete
             </div>
+            {data.role && (
+              <div className="text-red-600 cursor-pointer">Edit</div>
+            )}
             <Link to={`/detail-Post/${data.id}`}>
               <div className="w-56  bg-white p-5">
                 <div className="h-16 p-2 text-lg font-semibold overflow-hidden">
